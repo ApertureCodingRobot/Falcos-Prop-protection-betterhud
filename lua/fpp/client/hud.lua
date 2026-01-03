@@ -7,6 +7,24 @@ surface.CreateFont("TabLarge", {
     shadow = false,
     font = "Trebuchet MS"})
 
+surface.CreateFont( "BiggerText", {
+	font = "Default", -- Use the font-name which is shown to you by your operating system Font Viewer.
+	extended = false,
+	size = 18,
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
 hook.Add("CanTool", "FPP_CL_CanTool", function(ply, trace, tool) -- Prevent client from SEEING his toolgun shoot while it doesn't shoot serverside.
     if IsValid(trace.Entity) and not FPP.canTouchEnt(trace.Entity, "Toolgun") then
         return false
@@ -163,24 +181,6 @@ local function FilterEntityTable(eyepos, t)
 
     return filtered
 end
-
-surface.CreateFont( "BiggerText", {
-	font = "Default", -- Use the font-name which is shown to you by your operating system Font Viewer.
-	extended = false,
-	size = 18,
-	weight = 1000,
-	blursize = 0,
-	scanlines = 0,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
-} )
 
 local boxBackground = Color(0, 0, 0, 110)
 local canTouchTextColor = Color(255, 255, 255, 255)
