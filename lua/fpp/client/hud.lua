@@ -164,8 +164,26 @@ local function FilterEntityTable(eyepos, t)
     return filtered
 end
 
+surface.CreateFont( "BiggerText", {
+	font = "Default", -- Use the font-name which is shown to you by your operating system Font Viewer.
+	extended = false,
+	size = 18,
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
 local boxBackground = Color(0, 0, 0, 110)
-local canTouchTextColor = Color(0, 255, 0, 255)
+local canTouchTextColor = Color(255, 255, 255, 255)
 local cannotTouchTextColor = Color(255, 0, 0, 255)
 local function HUDPaint()
     local i = 0
@@ -191,7 +209,7 @@ local function HUDPaint()
     local eyepos = ply:EyePos()
     local LAEnt2 = ents.FindAlongRay(eyepos, eyepos + EyeAngles():Forward() * 16384)
 
-    local LAEnt = FilterEntityTable(eyepos, LAEnt2)
+    local LAEnt = ply:GetEyeTrace().Entity
     if not IsValid(LAEnt) then return end
     -- Prevent being able to see ownership through walls
     local eyeTrace = ply:GetEyeTrace()
@@ -207,15 +225,15 @@ local function HUDPaint()
     if not reason then return end
     local originalOwner = LAEnt:GetNW2String("FPP_OriginalOwner")
     originalOwner = originalOwner ~= "" and (" (previous owner: %s)"):format(originalOwner) or ""
-    reason = reason .. originalOwner
+    reason = reason .. originalOwner .. "\n" .. LAEnt:GetModel() .. " [" .. LAEnt:EntIndex() .. "]" .. "\n" .. LAEnt:GetClass() .. "\n" .. tostring(LAEnt:GetAngles())
 
-    surface_SetFont("Default")
+    surface_SetFont("BiggerText")
     local w,h = surface_GetTextSize(reason)
     local col = FPP.canTouchEnt(LAEnt, touchType) and canTouchTextColor or cannotTouchTextColor
     local scrH = ScrH()
 
-    draw_RoundedBox(4, 0, scrH / 2 - h - 2, w + 10, 20, boxBackground)
-    draw_DrawText(reason, "Default", 5, scrH / 2 - h, col, 0)
+    draw_RoundedBox(4, 0, scrH / 2 - h - 2, w + 10, 75, boxBackground)
+    draw_DrawText(reason, "BiggerText", 5, scrH / 2 - h, col, 0)
     surface_SetDrawColor(255, 255, 255, 255)
 end
 hook.Add("HUDPaint", "FPP_HUDPaint", HUDPaint)
