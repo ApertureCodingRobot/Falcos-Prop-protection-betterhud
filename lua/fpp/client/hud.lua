@@ -1,3 +1,5 @@
+CreateClientConVar("fpp_showhud","1",true,false,"ASC COMMAND: This will show the falco prop protection hud on the left of your screen")
+
 FPP = FPP or {}
 
 surface.CreateFont("TabLarge", {
@@ -94,7 +96,6 @@ end
 usermessage.Hook("FPP_Notify", function(u) FPP.AddNotify(u:ReadString(), u:ReadBool(), u:ReadFloat()) end)
 
 local function DrawNotice(k, v, i)
-
     local H = ScrH() / 1024
     local x = v.x - 75 * H
     local y = v.y - 20 * H - 2
@@ -186,6 +187,8 @@ local boxBackground = Color(0, 0, 0, 110)
 local canTouchTextColor = Color(255, 255, 255, 255)
 local cannotTouchTextColor = Color(255, 0, 0, 255)
 local function HUDPaint()
+    if GetConVar("fpp_showhud"):GetString() == "0" then return end
+    
     local i = 0
     for k, v in pairs(HUDNotes) do
         if v ~= 0 then
